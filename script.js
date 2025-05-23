@@ -306,6 +306,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                 e.preventDefault();
                 moveCarousel('shield', 1);
             }
+            if (e.key === 'Tab') {
+                setActiveCarousel(null);
+            }
         });
 
         ribbonBox.addEventListener('keydown', function(e) {
@@ -315,6 +318,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             } else if (e.key === 'ArrowRight') {
                 e.preventDefault();
                 moveCarousel('ribbon', 1);
+            }
+            if (e.key === 'Tab') {
+                setActiveCarousel(null);
             }
         });
 
@@ -333,6 +339,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                 });
                 e.preventDefault();
             }
+            if (e.key === 'Tab') {
+                setActiveCarousel(null);
+            }
         });
 
         function outsideCarousels(el) {
@@ -350,6 +359,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                 setActiveCarousel(null);
             }
         });
+
+        window.addEventListener('blur', () => setActiveCarousel(null));
     generateBadge();
     });
 
