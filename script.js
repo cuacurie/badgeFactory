@@ -565,6 +565,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                     setActiveCarousel('shield');
                     generateBadge();
                     updateCarouselStates();
+                    // Keep focus on the carousel box so keyboard navigation works
+                    shieldBox.focus();
                 };
             });
 
@@ -575,6 +577,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                     setActiveCarousel('ribbon');
                     generateBadge();
                     updateCarouselStates();
+                    // Maintain focus for subsequent arrow key navigation
+                    ribbonBox.focus();
                 };
             });
 
@@ -585,6 +589,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                     setActiveCarousel('icon');
                     generateBadge();
                     updateCarouselStates();
+                    // Keep focus on the icon carousel for keyboard arrows
+                    iconBox.focus();
                 };
             });
 
