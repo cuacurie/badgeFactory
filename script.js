@@ -1,10 +1,26 @@
     const colors = ['#2196f3'];
     let baseColor = colors[0];
     let activeCarousel = null; // Track the active carousel
-let iconPaths = {};
-async function loadIconPaths(){
-  const res = await fetch("icon_paths.json");
-  iconPaths = await res.json();
+// Load a small set of icons immediately so the page remains responsive
+let iconPaths = {
+  "emoji_events": "M19,5h -2V3H7v2H5C3.9,5,3,5.9,3,7v1c0,2.55,1.92,4.63,4.39,4.94c0.63,1.5,1.98,2.63,3.61,2.96V19H7v2h10v -2h -4v -3.1c1.63 -0.33,2.98 -1.46,3.61 -2.96C19.08,12.63,21,10.55,21,8V7C21,5.9,20.1,5,19,5z M5,8V7h2v3.82C5.84,10.4,5,9.3,5,8z M12,14c -1.65,0 -3-1.35 -3-3V5h6v6C15,12.65,13.65,14,12,14z M19,8c0,1.3 -0.84,2.4 -2,2.82V7h2V8z",
+  "catching_pokemon": "M14.5,12c0,1.38  -1.12,2.5  -2.5,2.5c  -1.38,0  -2.5  -1.12  -2.5  -2.5s1.12  -2.5,2.5  -2.5C13.38,9.5,14.5,10.62,14.5,12z M22,12 c0,5.52  -4.48,10  -10,10C6.48,22,2,17.52,2,12S6.48,2,12,2C17.52,2,22,6.48,22,12z M20,12h  -4c0  -2.21  -1.79  -4-4  -4c  -2.21,0  -4,1.79  -4,4H4 c0,4.41,3.59,8,8,8C16.41,20,20,16.41,20,12z",
+  "workspace_premium": "M9.68,13.69L12,11.93l2.31,1.76l  -0.88  -2.85L15.75,9h-2.84L12,6.19L11.09,9H8.25l2.31,1.84L9.68,13.69z M20,10 c0  -4.42  -3.58  -8-8-8s-8,3.58  -8,8c0,2.03,0.76,3.87,2,5.28V23l6  -2l6,2v  -7.72C19.24,13.87,20,12.03,20,10z M12,4c3.31,0,6,2.69,6,6 s-2.69,6  -6,6s-6  -2.69  -6-6S8.69,4,12,4z M12,19l  -4,1.02v  -3.1C9.18,17.6,10.54,18,12,18s2.82  -0.4,4  -1.08v3.1L12,19z",
+  "smoke_free": "M20.5 13H22v3h  -1.5zM18 13h1.5v3H18zm  -1 0h  -2.34L17 15.34zm  -2.5  -4.35h1.53c1.05 0 1.97.74 1.97 2.05V12h1.5v  -1.64c0  -1.81  -1.6  -3.16  -3.47  -3.16H14.5c  -1.02 0  -1.85-.98  -1.85  -2s.83  -1.75 1.85  -1.75v  -1.5c  -1.85 0  -3.35 1.5  -3.35 3.35s1.5 3.35 3.35 3.35zm4.35  -3.92c.62-.61 1  -1.45 1  -2.38h  -1.5c0 1.02-.83 1.85  -1.85 1.85v1.5c2.24 0 4 1.83 4 4.07V12H22v -2.24c0  -2.22  -1.28  -4.14  -3.15  -5.03zM3.41 4.59L2 6l7 7H2v3h10l7 7 1.41-1.41z",
+  "verified": "M23,11.99l -2.44 -2.79l0.34 -3.69l -3.61 -0.82L15.4,1.5L12,2.96L8.6,1.5L6.71,4.69L3.1,5.5L3.44,9.2L1,11.99l2.44,2.79 l -0.34,3.7l3.61,0.82L8.6,22.5l3.4 -1.47l3.4,1.46l1.89 -3.19l3.61 -0.82l -0.34 -3.69L23,11.99z M19.05,13.47l -0.56,0.65l0.08,0.85 l0.18,1.95l -1.9,0.43l -0.84,0.19l -0.44,0.74l -0.99,1.68l -1.78 -0.77L12,18.85l -0.79,0.34l -1.78,0.77l -0.99 -1.67l -0.44 -0.74 l -0.84-0.19l -1.9 -0.43l0.18 -1.96l0.08 -0.85l -0.56 -0.65l -1.29 -1.47l1.29 -1.48l0.56 -0.65L5.43,9.01L5.25,7.07l1.9 -0.43l0.84 -0.19 l0.44 -0.74l0.99 -1.68l1.78,0.77L12,5.14l0.79 -0.34l1.78 -0.77l0.99,1.68l0.44,0.74l0.84,0.19l1.9,0.43l -0.18,1.95l -0.08,0.85 l0.56,0.65l1.29,1.47L19.05,13.47z M10.09,13.75L7.77,11.42L6.29,12.91L10.09,16.72L17.43,9.36L15.95,7.87z",
+  "military_tech": "M17,10.43V2H7v8.43c0,0.35,0.18,0.68,0.49,0.86l4.18,2.51l -0.99,2.34l -3.41,0.29l2.59,2.24L9.07,22L12,20.23L14.93,22 l -0.78 -3.33l2.59 -2.24l -3.41 -0.29l -0.99 -2.34l4.18 -2.51C16.82,11.11,17,10.79,17,10.43z M11,11.07l-2-1.2V4h2V11.07z M15,9.87 l -2,1.2V4h2V9.87z",
+  "science": "M13,11.33L18,18H6l5 -6.67V6h2 M15.96,4H8.04C7.62,4,7.39,4.48,7.65,4.81L9,6.5v4.17L3.2,18.4C2.71,19.06,3.18,20,4,20h16 c0.82,0,1.29 -0.94,0.8 -1.6L15,10.67V6.5l1.35 -1.69C16.61,4.48,16.38,4,15.96,4L15.96,4z"
+};
+
+// Load additional icon chunks asynchronously and merge them
+async function loadIconChunk(file) {
+    const res = await fetch(file);
+    const data = await res.json();
+    Object.assign(iconPaths, data);
+    if (window.carouselsInitialized) {
+        window.carouselsInitialized = false;
+        updateCarousels();
+    }
 }
 
 
@@ -231,7 +247,6 @@ async function loadIconPaths(){
 
     // Remove setColor and hex input logic, just use color input
 document.addEventListener('DOMContentLoaded', async function() {
-        await loadIconPaths();
         window.currentIcon = window.currentIcon || Object.keys(iconPaths)[0];
         document.getElementById('customColor').addEventListener('input', function() {
             baseColor = this.value;
@@ -251,6 +266,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Focus management for carousels
         let focusedCarousel = null;
         updateCarousels();
+        // Load remaining icon sets in the background
+        (async () => {
+            const chunks = [
+                'icon_paths_part1.json',
+                'icon_paths_part2.json',
+                'icon_paths_part3.json',
+                'icon_paths_part4.json'
+            ];
+            for (const chunk of chunks) {
+                await loadIconChunk(chunk);
+            }
+        })();
         const shieldBox = document.getElementById('shieldCarouselBox');
         const ribbonBox = document.getElementById('ribbonCarouselBox');
         const iconBox = document.getElementById('iconCarouselBox');
@@ -707,7 +734,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Update the event handlers to use the state system
 document.addEventListener('DOMContentLoaded', async function() {
-        if (!Object.keys(iconPaths).length) await loadIconPaths();
         const carousels = document.querySelectorAll('.carousel-box');
         
         // Function to activate a carousel
