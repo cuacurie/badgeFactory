@@ -165,7 +165,7 @@ async function loadIconChunk(file) {
         input.style.fontFamily = 'Arial, Helvetica, sans-serif';
         input.style.color = 'black';
         input.style.background = 'white';
-        input.style.border = '2px solid red';
+        input.style.border = '2px solid white';
         input.style.borderRadius = '4px';
         input.style.padding = '2px 8px';
         input.style.zIndex = 10000;
@@ -332,6 +332,22 @@ document.addEventListener('DOMContentLoaded', async function() {
                     scrollToItem(container, `icon-carousel-item-${idx}`);
                 });
                 e.preventDefault();
+            }
+        });
+
+        function outsideCarousels(el) {
+            return !shieldBox.contains(el) && !ribbonBox.contains(el) && !iconBox.contains(el);
+        }
+
+        document.addEventListener('click', function(e) {
+            if (outsideCarousels(e.target)) {
+                setActiveCarousel(null);
+            }
+        });
+
+        document.addEventListener('focusin', function(e) {
+            if (outsideCarousels(e.target)) {
+                setActiveCarousel(null);
             }
         });
     generateBadge();
