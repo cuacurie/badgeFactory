@@ -263,8 +263,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             setTimeout(() => announcement.remove(), 1000);
         });
 
-        // Focus management for carousels
-        let focusedCarousel = null;
         updateCarousels();
         // Load remaining icon sets in the background
         (async () => {
@@ -278,30 +276,61 @@ document.addEventListener('DOMContentLoaded', async function() {
                 await loadIconChunk(chunk);
             }
         })();
+
         const shieldBox = document.getElementById('shieldCarouselBox');
         const ribbonBox = document.getElementById('ribbonCarouselBox');
         const iconBox = document.getElementById('iconCarouselBox');
-        
-        shieldBox.addEventListener('focus', function() {
-            focusedCarousel = 'shield';
-            shieldBox.classList.add('focused');
+
+        function setActiveCarousel(type) {
+            activeCarousel = type;
+            shieldBox.classList.toggle('focused', type === 'shield');
+            ribbonBox.classList.toggle('focused', type === 'ribbon');
+            iconBox.classList.toggle('focused', type === 'icon');
+        }
+
+        shieldBox.addEventListener('focus', () => setActiveCarousel('shield'));
+        ribbonBox.addEventListener('focus', () => setActiveCarousel('ribbon'));
+        iconBox.addEventListener('focus', () => setActiveCarousel('icon'));
+
+        shieldBox.addEventListener('click', () => setActiveCarousel('shield'));
+        ribbonBox.addEventListener('click', () => setActiveCarousel('ribbon'));
+        iconBox.addEventListener('click', () => setActiveCarousel('icon'));
+
+        shieldBox.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                moveCarousel('shield', -1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                moveCarousel('shield', 1);
+            }
         });
-        shieldBox.addEventListener('blur', function() {
-            shieldBox.classList.remove('focused');
+
+        ribbonBox.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                moveCarousel('ribbon', -1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                moveCarousel('ribbon', 1);
+            }
         });
-        ribbonBox.addEventListener('focus', function() {
-            focusedCarousel = 'ribbon';
-            ribbonBox.classList.add('focused');
-        });
-        ribbonBox.addEventListener('blur', function() {
-            ribbonBox.classList.remove('focused');
-        });
-        iconBox.addEventListener('focus', function() {
-            focusedCarousel = 'icon';
-            iconBox.classList.add('focused');
-        });
-        iconBox.addEventListener('blur', function() {
-            iconBox.classList.remove('focused');
+
+        iconBox.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                const iconOptions = Object.keys(iconPaths);
+                let idx = iconOptions.indexOf(window.currentIcon);
+                if (e.key === 'ArrowLeft') idx = (idx - 1 + iconOptions.length) % iconOptions.length;
+                if (e.key === 'ArrowRight') idx = (idx + 1) % iconOptions.length;
+                window.currentIcon = iconOptions[idx];
+                generateBadge();
+                updateCarouselStates();
+                requestAnimationFrame(() => {
+                    const container = document.querySelector('#iconCarousel .carousel-items');
+                    scrollToItem(container, `icon-carousel-item-${idx}`);
+                });
+                e.preventDefault();
+            }
         });
     generateBadge();
     });
@@ -533,6 +562,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 el.onclick = () => {
                     const idx = +el.getAttribute('data-idx');
                     window.currentShield = shieldOptions[idx];
+                    setActiveCarousel('shield');
                     generateBadge();
                     updateCarouselStates();
                 };
@@ -542,6 +572,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 el.onclick = () => {
                     const idx = +el.getAttribute('data-idx');
                     window.currentRibbon = ribbonOptions[idx];
+                    setActiveCarousel('ribbon');
                     generateBadge();
                     updateCarouselStates();
                 };
@@ -551,6 +582,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 el.onclick = () => {
                     const idx = +el.getAttribute('data-idx');
                     window.currentIcon = iconOptions[idx];
+                    setActiveCarousel('icon');
                     generateBadge();
                     updateCarouselStates();
                 };
@@ -573,79 +605,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         iconDiv.querySelectorAll('.carousel-item').forEach(el => el.tabIndex = -1);
         iconDiv.tabIndex = -1;  // Set iconCarousel to non-focusable
     }
-
-    // Focus management for carousels
-    let focusedCarousel = null;
-    const shieldBox = document.getElementById('shieldCarouselBox');
-    const ribbonBox = document.getElementById('ribbonCarouselBox');
-    const iconBox = document.getElementById('iconCarouselBox');
-    
-    // Focus handlers for outer boxes
-    shieldBox.addEventListener('focus', function() {
-        focusedCarousel = 'shield';
-        shieldBox.classList.add('focused');
-    });
-    shieldBox.addEventListener('blur', function() {
-        shieldBox.classList.remove('focused');
-    });
-    ribbonBox.addEventListener('focus', function() {
-        focusedCarousel = 'ribbon';
-        ribbonBox.classList.add('focused');
-    });
-    ribbonBox.addEventListener('blur', function() {
-        ribbonBox.classList.remove('focused');
-    });
-    iconBox.addEventListener('focus', function() {
-        focusedCarousel = 'icon';
-        iconBox.classList.add('focused');
-    });
-    iconBox.addEventListener('blur', function() {
-        iconBox.classList.remove('focused');
-    });
-    
-    // Keyboard navigation on outer boxes
-    shieldBox.addEventListener('keydown', function(e) {
-        if (focusedCarousel === 'shield') {
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                moveCarousel('shield', -1);
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                moveCarousel('shield', 1);
-            }
-        }
-    });
-    
-    ribbonBox.addEventListener('keydown', function(e) {
-        if (focusedCarousel === 'ribbon') {
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                moveCarousel('ribbon', -1);
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                moveCarousel('ribbon', 1);
-            }
-        }
-    });
-
-    iconBox.addEventListener('keydown', function(e) {
-        if (focusedCarousel === 'icon') {
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                const iconOptions = Object.keys(iconPaths);
-                let idx = iconOptions.indexOf(window.currentIcon);
-                if (e.key === 'ArrowLeft') idx = (idx - 1 + iconOptions.length) % iconOptions.length;
-                if (e.key === 'ArrowRight') idx = (idx + 1) % iconOptions.length;
-                window.currentIcon = iconOptions[idx];
-                generateBadge();
-                updateCarouselStates();
-                requestAnimationFrame(() => {
-                    const container = document.querySelector('#iconCarousel .carousel-items');
-                    scrollToItem(container, `icon-carousel-item-${idx}`);
-                });
-                e.preventDefault();
-            }
-        }
-    });
 
     // Initialize carousels
     updateCarousels();
@@ -732,111 +691,4 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     };
 
-    // Update the event handlers to use the state system
-document.addEventListener('DOMContentLoaded', async function() {
-        const carousels = document.querySelectorAll('.carousel-box');
-        
-        // Function to activate a carousel
-        function activateCarousel(carousel) {
-            carousels.forEach(c => c.classList.remove('focused'));
-            carousel.classList.add('focused');
-            activeCarousel = carousel;
-        }
-        
-        carousels.forEach(carousel => {
-            // Handle carousel container clicks
-            carousel.addEventListener('click', function(e) {
-                // Only activate if clicking directly on the carousel container
-                if (e.target === this) {
-                    activateCarousel(this);
-                }
-            });
-
-            // Handle carousel container keyboard events
-            carousel.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    activateCarousel(this);
-                }
-            });
-
-            // Handle item clicks
-            const items = carousel.querySelectorAll('.carousel-item');
-            items.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Prevent carousel container click
-                    
-                    // Remove selected class from all items in this carousel
-                    items.forEach(i => i.classList.remove('selected'));
-                    // Add selected class to clicked item
-                    this.classList.add('selected');
-                    
-                    // Activate the parent carousel
-                    activateCarousel(carousel);
-                    
-                    // Remove the redundant click trigger
-                    // this.click(); // This line was causing the double-trigger
-                });
-            });
-        });
-
-        // Update the keyboard navigation to use the state system
-        document.addEventListener('keydown', function(e) {
-            if (!activeCarousel) return;
-
-            const items = activeCarousel.querySelectorAll('.carousel-item');
-            const selectedItem = activeCarousel.querySelector('.carousel-item.selected');
-            
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                e.preventDefault();
-                const direction = e.key === 'ArrowLeft' ? -1 : 1;
-                const itemsArray = Array.from(items);
-                const currentIndex = itemsArray.indexOf(selectedItem);
-                const newIndex = (currentIndex + direction + itemsArray.length) % itemsArray.length;
-                
-                itemsArray[currentIndex].classList.remove('selected');
-                itemsArray[newIndex].classList.add('selected');
-                itemsArray[newIndex].click();
-                
-                // Scroll the new item into view
-                const container = activeCarousel.querySelector('.carousel-items');
-                const newItem = itemsArray[newIndex];
-                const containerRect = container.getBoundingClientRect();
-                const itemRect = newItem.getBoundingClientRect();
-                
-                if (itemRect.left < containerRect.left) {
-                    container.scrollLeft -= (containerRect.left - itemRect.left);
-                } else if (itemRect.right > containerRect.right) {
-                    container.scrollLeft += (itemRect.right - containerRect.right);
-                }
-            }
-        });
-
-        // Keep the original focus management code
-        let focusedCarousel = null;
-        shieldBox.addEventListener('focus', function() {
-            focusedCarousel = this;
-            this.classList.add('focused');
-        });
-        shieldBox.addEventListener('blur', function() {
-            focusedCarousel = null;
-            this.classList.remove('focused');
-        });
-        ribbonBox.addEventListener('focus', function() {
-            focusedCarousel = this;
-            this.classList.add('focused');
-        });
-        ribbonBox.addEventListener('blur', function() {
-            focusedCarousel = null;
-            this.classList.remove('focused');
-        });
-        iconBox.addEventListener('focus', function() {
-            focusedCarousel = this;
-            this.classList.add('focused');
-        });
-        iconBox.addEventListener('blur', function() {
-            focusedCarousel = null;
-            this.classList.remove('focused');
-        });
-    });
 
