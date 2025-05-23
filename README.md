@@ -6,4 +6,4 @@ The repository provides a simple web-based “Badge Maker.” The application is
 
 To use the application locally, open index.html in a browser. You can pick a color, choose icon/shield/banner styles via the carousels, edit the badge name directly on the preview, and click “Save Badge” to download a PNG image of your badge.
 
-"Icons used in this app are provided by Google Material Design under the Apache License 2.0." 
+Icons used in this app are provided by Google Material Design under the Apache License 2.0.
