@@ -511,6 +511,23 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
+    // Enable looping scroll behaviour for a carousel container
+    function enableLoopScrolling(container) {
+        if (!container || container._loopAttached) return;
+        container._loopAttached = true;
+        let prev = container.scrollLeft;
+        container.addEventListener('scroll', function() {
+            const max = container.scrollWidth - container.clientWidth;
+            if (max <= 0) return;
+            if (container.scrollLeft <= 0 && prev > 0) {
+                container.scrollLeft = max - 1;
+            } else if (container.scrollLeft >= max && prev < max) {
+                container.scrollLeft = 1;
+            }
+            prev = container.scrollLeft;
+        });
+    }
+
     function updateCarouselStates() {
         const shieldDiv = document.getElementById('shieldCarousel');
         const ribbonDiv = document.getElementById('ribbonCarousel');
@@ -580,6 +597,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             shieldDiv.innerHTML = renderCarousel(shieldOptions, window.currentShield, 'shield');
             ribbonDiv.innerHTML = renderCarousel(ribbonOptions, window.currentRibbon, 'ribbon');
             iconDiv.innerHTML = renderIconCarousel(iconOptions, currentIcon);
+
+            // Attach looping scroll behaviour
+            enableLoopScrolling(shieldDiv.querySelector('.carousel-items'));
+            enableLoopScrolling(ribbonDiv.querySelector('.carousel-items'));
+            enableLoopScrolling(iconDiv.querySelector('.carousel-items'));
 
             // Restore scroll positions
             shieldDiv.scrollLeft = shieldScroll;
