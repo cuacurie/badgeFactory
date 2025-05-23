@@ -82,6 +82,10 @@
             border-radius: 0px;
             padding: 0px;
             box-sizing: border-box;
+            outline: none; /* Prevent focus ring from showing */
+        }
+        .carousel-item:focus {
+            outline: none;
         }
         /* Add breathing room below shield and banner carousels */
         #shieldCarousel .carousel-items,
