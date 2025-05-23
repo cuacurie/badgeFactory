@@ -1,0 +1,165 @@
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f8fc; color: #333; }
+        .container { display: flex; flex-direction: column; gap: 0; max-width: 900px; margin: auto; align-items: stretch; position: relative; }
+        .controls { flex: 1; }
+        select, input[type="text"] { width: 100%; padding: 8px; margin-top: 6px; margin-bottom: 0; box-sizing: border-box; }
+        button { padding: 0; cursor: pointer; }
+        svg { border: 0; margin-bottom: 12px; }
+        #badgeTextSvg:hover { text-decoration: underline; }
+        @media (min-width: 701px) {
+            .container { flex-direction: column; gap: 0; align-items: stretch; }
+            .controls { max-width: 100%; margin: auto; }
+            svg { margin: 0 auto 24px auto; display: block; }
+        }
+        @media (max-width: 700px) {
+            .container { flex-direction: column; gap: 0; align-items: stretch; }
+            svg { margin: 0 auto 24px auto; display: block; }
+            .controls { max-width: 100%; }
+        }
+        .color-picker { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 15px; max-width: 240px; }
+        .color-chip { width: 20px; height: 20px; cursor: pointer; border-radius: 4px; border: 2px solid transparent; }
+        .selected { border: 0px solid black; }
+        .material-icons { font-size: 64px; }
+        #carouselContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+            pointer-events: auto;
+            min-height: 40px;
+            background: none;
+            box-shadow: none;
+            border-radius: 0;
+            margin: 4px 0 8px 0;
+        }
+        .carousel-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 0;
+            margin: 8px 0;
+            padding: 12px 12px 8px 12px;
+            min-width: 252px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .carousel-box.focused {
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px #90caf9;
+        }
+        .carousel-label {
+            font-size: 14px;
+            font-weight: normal;
+            color: #444;
+            margin-bottom: 8px;
+            margin-left: 2px;
+        }
+        .carousel-arrow {
+            background: transparent;
+            background-color: #fff;
+            border: none;
+            outline: none;
+            border-radius: 0;
+            width: 32px;
+            height: 32px;
+            /* display removed to use default inline-block */
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 0 2px;
+            transition: background 0.15s;
+        }
+        .carousel-arrow:active, .carousel-arrow:focus {
+            background: #e3f2fd;
+        }
+        .carousel-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            margin: 0 4px;
+            vertical-align: middle;
+            cursor: ew-resize;
+            border-radius: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        /* Add breathing room below shield and banner carousels */
+        #shieldCarousel .carousel-items,
+        #ribbonCarousel .carousel-items {
+            padding-bottom: 10px;
+        }
+        .carousel-item.selected {
+            border: 0px solid transparent;
+            background-color: transparent;
+            /* No border or background for selection */
+        }
+        .carousel-item.ribbon {
+            height: 16px;
+            width: 36px;
+            min-width: 36px;
+            min-height: 16px;
+            padding: 0;
+            cursor: ew-resize;
+        }
+        .carousel-item svg {
+            border: 0 solid transparent;
+            width: 36px;
+            height: 36px;
+            display: block;
+        }
+        .carousel-item.ribbon svg {
+            width: 36px;
+            height: 16px;
+        }
+        .carousel-items {
+            display: inline-block;
+            overflow-x: auto;
+            white-space: nowrap;
+            width: 280px;
+            vertical-align: middle;
+            scroll-behavior: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            position: relative;
+            will-change: scroll-position;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* Remove the ::before and ::after pseudo-elements */
+        .carousel-items::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        .badge-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: -20px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 10;
+        }
+        .save-badge-btn {
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .save-badge-btn:hover {
+            background: #1565c0;
+        }
+        .save-badge-btn:active {
+            background: #0d47a1;
+        }
+        .save-badge-btn .material-icons {
+            font-size: 18px;
+        }
