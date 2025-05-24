@@ -1,5 +1,6 @@
 import { iconPaths } from './icons.js';
 import { generateBadge } from './badgeGenerator.js';
+import { announce } from './utils.js';
 
 export const ribbonOptions = [
   'rect', 'rounded', 'concave', 'pointed', 'chevron',
@@ -195,6 +196,7 @@ export function updateCarousels() {
         window.currentShield = shieldOptions[idx];
         generateBadge();
         updateCarouselStates();
+        announce(`Shield changed to ${window.currentShield.replace(/-/g, ' ')}`);
       };
     });
     ribbonDiv.querySelectorAll('.carousel-item').forEach(el => {
@@ -203,6 +205,7 @@ export function updateCarousels() {
         window.currentRibbon = ribbonOptions[idx];
         generateBadge();
         updateCarouselStates();
+        announce(`Ribbon changed to ${window.currentRibbon.replace(/-/g, ' ')}`);
       };
     });
     iconDiv.querySelectorAll('.carousel-item').forEach(el => {
@@ -211,6 +214,7 @@ export function updateCarousels() {
         window.currentIcon = iconOptions[idx];
         generateBadge();
         updateCarouselStates();
+        announce(`Icon changed to ${window.currentIcon.replace(/_/g, ' ')}`);
       };
     });
     setTimeout(() => {
@@ -236,6 +240,7 @@ export function moveCarousel(type, dir) {
       window.currentShield = shieldOptions[newIdx];
       generateBadge();
       updateCarouselStates();
+      announce(`Shield changed to ${window.currentShield.replace(/-/g, ' ')}`);
       requestAnimationFrame(() => {
         const container = document.querySelector('#shieldCarousel .carousel-items');
         scrollToItem(container, `shield-carousel-item-${newIdx}`);
@@ -248,6 +253,7 @@ export function moveCarousel(type, dir) {
       window.currentRibbon = ribbonOptions[newIdx];
       generateBadge();
       updateCarouselStates();
+      announce(`Ribbon changed to ${window.currentRibbon.replace(/-/g, ' ')}`);
       requestAnimationFrame(() => {
         const container = document.querySelector('#ribbonCarousel .carousel-items');
         scrollToItem(container, `ribbon-carousel-item-${newIdx}`);
