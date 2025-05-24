@@ -7,12 +7,12 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="background-color:#222;">
-    <div style="position:relative;z-index:0;max-width:940px;margin:8px auto 0 auto;">
-        <div style="position:absolute;z-index:0;top:0;left:0;width:100%;height:100%;background:#f4f8fc;border-radius:24px;box-shadow:0 2px 16px rgba(0,0,0,0.08);"></div>
-        <div class="container" style="position:relative;z-index:1;padding:4px 24px 32px 24px;">
-            <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
-                <svg id="badgeSvg" width="300" height="300" style="display:block;margin:auto;margin-bottom:12px;" role="img" aria-label="Badge Preview">
+<body>
+    <div class="main-wrapper">
+        <div class="background-box"></div>
+        <div class="container">
+            <div class="preview-wrapper">
+                <svg id="badgeSvg" width="300" height="300" role="img" aria-label="Badge Preview">
                     <g transform="scale(1.35) translate(55, 55)">
                         <!-- Shield -->
                         <path id="shieldPath" d="M100,20 L180,60 L180,140 C180,180 140,200 100,200 C60,200 20,180 20,140 L20,60 Z" fill="currentColor"/>
@@ -26,17 +26,17 @@
                 </svg>
                 <div class="badge-controls">
                     <div id="colorPicker" class="color-picker" aria-label="Preset colors"></div>
-                    <input type="color" id="customColor" value="#2196f3" style="width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;overflow:hidden;"
+                    <input type="color" id="customColor" value="#2196f3"
                            aria-label="Select badge color" role="button" title="Select badge color">
                     <button type="button" onclick="downloadPNG()" class="save-badge-btn" aria-label="Save your badge">
                         <span class="material-icons">download</span>
                         Save Badge
                     </button>
                 </div>
-                <div id="iconCarouselBox" class="carousel-box" style="display:inline-block;margin:4px;padding:4px;border:1px solid #ccc;border-radius:4px;background:#fff;vertical-align:top;width:300px;" tabindex="0" role="group" aria-label="Icon options">
+                <div id="iconCarouselBox" class="carousel-box" tabindex="0" role="group" aria-label="Icon options">
                     <div class="carousel-label">Select Icon</div>
-                    <div id="iconCarousel" style="display:inline-block;position:relative;" tabindex="-1" role="presentation">
-                        <div id="iconCarouselItems" class="carousel-items" style="display:inline-block;overflow-x:auto;white-space:nowrap;width:280px;vertical-align:middle;padding:4px;" role="listbox" aria-label="Icon options" tabindex="-1"></div>
+                    <div id="iconCarousel" tabindex="-1" role="presentation">
+                        <div id="iconCarouselItems" class="carousel-items" role="listbox" aria-label="Icon options" tabindex="-1"></div>
                     </div>
                 </div>
                 <div id="carouselContainer">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <form class="controls" style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:350px;margin:auto;">
+            <form class="controls">
                 <!-- Icon dropdown removed -->
             </form>
         </div>
