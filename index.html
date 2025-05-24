@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Badge Maker</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -24,7 +25,8 @@
                     </g>
                 </svg>
                 <div class="badge-controls">
-                    <input type="color" id="customColor" value="#2196f3" style="width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;overflow:hidden;" 
+                    <div id="colorPicker" class="color-picker" aria-label="Preset colors"></div>
+                    <input type="color" id="customColor" value="#2196f3" style="width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:8px;overflow:hidden;"
                            aria-label="Select badge color" role="button" title="Select badge color">
                     <button type="button" onclick="downloadPNG()" class="save-badge-btn" aria-label="Save your badge">
                         <span class="material-icons">download</span>

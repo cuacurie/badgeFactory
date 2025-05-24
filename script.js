@@ -1,4 +1,4 @@
-    const colors = ['#2196f3'];
+    const colors = ['#2196f3', '#e91e63', '#ff9800', '#4caf50', '#9c27b0', '#ffeb3b', '#795548', '#607d8b', '#f44336', '#00bcd4'];
     let baseColor = colors[0];
     let activeCarousel = null; // Track the active carousel
     let currentSelection = null; // Last clicked carousel item element
@@ -33,6 +33,29 @@ async function loadIconChunk(file) {
         let g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amt));
         let b = Math.min(255, Math.max(0, (num & 0x0000FF) + amt));
         return '#' + (r << 16 | g << 8 | b).toString(16).padStart(6, '0');
+    }
+
+    function renderColorPicker() {
+        const container = document.getElementById('colorPicker');
+        if (!container) return;
+        container.innerHTML = '';
+        colors.forEach(color => {
+            const chip = document.createElement('div');
+            chip.className = 'color-chip';
+            chip.style.backgroundColor = color;
+            if (color.toLowerCase() === baseColor.toLowerCase()) {
+                chip.classList.add('selected');
+            }
+            chip.addEventListener('click', () => {
+                baseColor = color;
+                const input = document.getElementById('customColor');
+                if (input) input.value = color;
+                generateBadge();
+                container.querySelectorAll('.color-chip').forEach(c => c.classList.remove('selected'));
+                chip.classList.add('selected');
+            });
+            container.appendChild(chip);
+        });
     }
 
     // Store badge text in a variable now that the input is removed
@@ -250,9 +273,11 @@ async function loadIconChunk(file) {
     // Remove setColor and hex input logic, just use color input
 document.addEventListener('DOMContentLoaded', async function() {
         window.currentIcon = window.currentIcon || Object.keys(iconPaths)[0];
+        renderColorPicker();
         document.getElementById('customColor').addEventListener('input', function() {
             baseColor = this.value;
             generateBadge();
+            renderColorPicker();
             // Announce color change
             const colorName = this.value;
             const announcement = document.createElement('div');
@@ -362,6 +387,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         window.addEventListener('blur', () => setActiveCarousel(null));
     generateBadge();
+    renderColorPicker();
     });
 
 
