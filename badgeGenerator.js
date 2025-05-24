@@ -78,7 +78,7 @@ export function generateBadge() {
       svgContent += `<path id="badgeIconSvg" d="${iconPaths[icon]}" fill="white" transform="translate(150, 136) scale(4.8) translate(-12, -12)" />`;
     }
 
-    svgContent += `<text id="badgeTextSvg" pointer-events="all" x="150" y="216" text-anchor="middle" fill="white" font-size="16px" font-weight="bold" font-family="Arial, Helvetica, sans-serif" style="cursor:pointer;" title="Click to edit badge name" tabindex="0" role="textbox" aria-label="Enter badge name here" aria-multiline="false">${text}</text>`;
+    // Text element will be created via DOM to avoid injecting unescaped HTML
 
     const svg = document.getElementById('badgeSvg');
     if (!svg) {
@@ -86,15 +86,31 @@ export function generateBadge() {
     }
     svg.innerHTML = svgContent;
 
-    const textElem = document.getElementById('badgeTextSvg');
-    if (textElem) {
-      textElem.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          showTextInput();
-        }
-      });
-    }
+    const textElem = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    textElem.id = 'badgeTextSvg';
+    textElem.setAttribute('pointer-events', 'all');
+    textElem.setAttribute('x', '150');
+    textElem.setAttribute('y', '216');
+    textElem.setAttribute('text-anchor', 'middle');
+    textElem.setAttribute('fill', 'white');
+    textElem.setAttribute('font-size', '16px');
+    textElem.setAttribute('font-weight', 'bold');
+    textElem.setAttribute('font-family', 'Arial, Helvetica, sans-serif');
+    textElem.setAttribute('style', 'cursor:pointer;');
+    textElem.setAttribute('title', 'Click to edit badge name');
+    textElem.setAttribute('tabindex', '0');
+    textElem.setAttribute('role', 'textbox');
+    textElem.setAttribute('aria-label', 'Enter badge name here');
+    textElem.setAttribute('aria-multiline', 'false');
+    textElem.textContent = text;
+    svg.appendChild(textElem);
+
+    textElem.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showTextInput();
+      }
+    });
   } catch (err) {
     showError('Failed to generate badge: ' + err.message);
   }
