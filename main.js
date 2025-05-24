@@ -1,6 +1,7 @@
 import { iconPaths, loadIconChunk } from './icons.js';
 import { setBaseColor, generateBadge, showTextInput, downloadPNG } from './badgeGenerator.js';
 import { updateCarousels, updateCarouselStates, moveCarousel, scrollToItem } from "./carousel.js";
+import { announce } from './utils.js';
 
 window.downloadPNG = downloadPNG;
 
@@ -17,14 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setBaseColor(this.value);
     generateBadge();
     const colorName = this.value;
-    const announcement = document.createElement('div');
-    announcement.setAttribute('aria-live', 'polite');
-    announcement.setAttribute('aria-atomic', 'true');
-    announcement.style.position = 'absolute';
-    announcement.style.left = '-9999px';
-    announcement.textContent = `Color changed to ${colorName}`;
-    document.body.appendChild(announcement);
-    setTimeout(() => announcement.remove(), 1000);
+    announce(`Color changed to ${colorName}`);
   });
 
   updateCarousels();
@@ -95,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.currentIcon = iconOptions[idx];
       generateBadge();
       updateCarouselStates();
+      announce(`Icon changed to ${window.currentIcon.replace(/_/g, ' ')}`);
       requestAnimationFrame(() => {
         const container = document.querySelector('#iconCarousel .carousel-items');
         scrollToItem(container, `icon-carousel-item-${idx}`);
