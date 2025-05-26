@@ -264,7 +264,7 @@ export function moveCarousel(type, dir) {
 
 export function renderIconCarousel(iconOptions, currentIcon) {
   const idx = iconOptions.indexOf(currentIcon);
-  let html = `<div class="carousel-items" style="display:inline-block;overflow-x:auto;white-space:nowrap;width:280px;vertical-align:middle;padding:4px;" role="listbox" aria-label="Icon options">`;
+  let html = `<div class="carousel-items" style="display:inline-block;overflow-x:auto;white-space:nowrap;width:280px;vertical-align:middle;padding:4px;" role="listbox" aria-label="Icon options" tabindex="-1">`;
   iconOptions.forEach((icon, i) => {
     const selected = i === idx;
     const fill = selected ? '#555' : '#bbb';
